@@ -1,19 +1,18 @@
-const express = require("express");
-const app = express();
+const express = require('express')
+const app = express()
+const bodyParser = require('body-parser')
+const port = 3001
 
-let users = {
-    nome = "sergio",
-    email = "sergio@protonmail.com"
-}
+app.use(bodyParser.json())
 
-app.get("/", function(req, res) {
-    res.send(users)
-})
+const usuario = require('./src/controllers/usuario-controller')
+const tarefa = require('./src/controllers/tarefa-controller')
 
-/*app.get("/", function(req, res){
-    res.send("Olá, mundo!")
-})*/
+const db = require('./infra/bd')
 
-app.listen(8082, function(){
-    console.log("Servidor rodando na url http://localhost:8082")
+usuario(app, db)
+tarefa(app, db)
+
+app.listen(port, () => {
+    console.log(`Ouvindo em http://localhost:${port}`)
 })
